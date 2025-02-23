@@ -30,6 +30,20 @@ class Board:
         return board_string
     
     def win(self)->bool:
+        """
+        Win conditions are:
+        - 3 X or O in one row (e.g [X, X, X])
+          or in one column (e.g [X, 
+                                 X, 
+                                 X]
+        )
+        or in diagonal (e.g 
+        [O, , ]     [ , ,X]
+        [ ,O, ]     [ ,X, ]
+        [ , ,O]     [X, , ]
+        )
+        Return: return true if there is a winner
+        """
         winner: int = -1
         for i in range(3):
             row_win: bool = (self.board[i][0]==self.board[i][1]==self.board[i][2]) and isinstance(self.board[i][0], bool)
@@ -42,4 +56,20 @@ class Board:
         if diag_win:
             winner = int(self.board[1][1])
         return winner > 0
+    
+    def draw(self):
+        """
+        The game is in draw if all the move has been played and there is not a winner
+        Return: return is the game is draw by checking board completion and if there is a winner
+        """
+        if self.win():
+            return False
+        else:
+            for i in range(3):
+                for j in range(3):
+                    if not(isinstance(self.board[i][j], bool)):
+                        print("\nThere is still move to play !\n")
+                        return False
+            return True
+
 

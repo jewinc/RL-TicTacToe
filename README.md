@@ -12,11 +12,11 @@ This repository is for the course Communication in Paris-Saclay university Maste
 ✅ **Goal:** Create a functional Tic-Tac-Toe game with a simple command-line interface (CLI).  
 
 🔹 **Tasks:**  
-- [ ] Define the 3x3 board as a NumPy array or list.  
+- [X] Define the 3x3 board as a NumPy array or list.  
 - [ ] Implement functions to:  
-  - Display the board  
-  - Check for a win or draw condition  
-  - Handle player moves  
+  - [X] Display the board  
+  - [X] Check for a win or draw condition  
+  - [ ] Handle player moves  
 - [ ] Add basic user interaction (human vs. human mode).  
 
 🔹 **Milestone:** A fully functional CLI Tic-Tac-Toe game.  
