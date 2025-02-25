@@ -43,7 +43,7 @@ class Board:
 
         return board_string
     
-    def win(self)->bool:
+    def win(self)->tuple[bool, int]:
         """
         Win conditions are:
         - 3 X or O in one row (e.g [X, X, X])
@@ -69,7 +69,7 @@ class Board:
         diag_win: bool = ((self.board[0][0]==self.board[1][1]==self.board[2][2]) or (self.board[2][0]==self.board[1][1]==self.board[0][2])) and isinstance(self.board[1][1], bool)
         if diag_win:
             winner = int(self.board[1][1])
-        return winner > 0
+        return (winner>=0, winner)
     
     def draw(self):
         """
