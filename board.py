@@ -27,11 +27,13 @@ class Board:
             Param: boolean move
             Return: corresponding rendering
             """
-            if move:
+            if not(isinstance(move, bool)):
+                return 'E'
+            elif move:
                 return 'X'
             else:
                 return 'O'
-        
+            
         row_str: bool = "-------"
         board_string = f"{row_str}\n"
         for row in self.board:
@@ -89,4 +91,37 @@ class Board:
     def play(self, move:str, player:bool):
         coords:tuple[int] = MOVES[move]
         self.board[coords[0]][coords[1]] =  player
+
+    def get(self, move:str)->bool:
+        coords:tuple[int] = MOVES[move]
+        return self.board[coords[0]][coords[1]]
+
+    def check_move_valid(self, move:str)->bool:
+        return not(isinstance(self.get(move), bool))
+            
+
+    def start(self):
+        def move_choice(board: Board)->str:
+            player_move: str = input("Choose a move : ")
+            while not(board.check_move_valid(player_move)):
+                player_move: str = input("Move already played, choose another one : ")
+            return player_move
+
+        ongoing: bool = True
+        turn: bool = False
+        while ongoing:
+            print(f"{self}Player's {int(turn) + 1} turn")
+            player_move = move_choice(self)
+            self.play(player_move, turn)
+            turn = not(turn)
+            winner = self.win()
+            if winner[0]:
+                ongoing = False
+                print(self)
+                print(f"The winner is player {winner[1]} !")
+            elif self.draw():
+                ongoing = False
+
+            
+            
 

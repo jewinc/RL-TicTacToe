@@ -16,8 +16,8 @@ This repository is for the course Communication in Paris-Saclay university Maste
 - [ ] Implement functions to:  
   - [X] Display the board  
   - [X] Check for a win or draw condition  
-  - [ ] Handle player moves  
-- [ ] Add basic user interaction (human vs. human mode).  
+  - [X] Handle player moves  
+- [X] Add basic user interaction (human vs. human mode).  
 
 🔹 **Milestone:** A fully functional CLI Tic-Tac-Toe game.  
 

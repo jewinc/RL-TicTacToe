@@ -1,4 +1,5 @@
-from board import Board
+from board import Board, MOVES
+
 class Test:
     
     def play_move():
@@ -8,7 +9,7 @@ class Test:
         assert(state0!=board.get('HG'))
 
         for move in MOVES.keys():
-            state_before = board.play(move)
+            state_before = board.get(move)
             board.play(move, True)
             assert(state_before!=board.get(move))
 
@@ -67,7 +68,8 @@ class Test:
         board2.play("BG", bool(player))
         assert(board2.win()[0]==True)
 
-    def run(self):
-        self.play_move()
-        self.rows_win()
-        self.cols_win()
+    @staticmethod
+    def run():
+        Test.play_move()
+        Test.rows_win()
+        Test.cols_win()

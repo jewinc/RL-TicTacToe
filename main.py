@@ -1,8 +1,12 @@
 from board import Board
+from test import Test 
 
 def main():
     board = Board()
     print(str(board))
-    print(board.win())
+
+    Test.run()
+
+    board.start()
 
 main()
