@@ -1,3 +1,17 @@
+MOVES: dict[str, tuple[int]] = {
+        'HG': (0,0),
+        'HM': (0,1),
+        'HD': (0,2),
+        'MG': (1,0),
+        'MM': (1,1),
+        'MD': (1,2),
+        'BG': (2,0),
+        'BM': (2,1),
+        'BD': (2,2)
+}
+
+
+
 class Board:
     def __init__(self):
         self.board: list[list[bool]] = [
@@ -29,7 +43,7 @@ class Board:
 
         return board_string
     
-    def win(self)->bool:
+    def win(self)->tuple[bool, int]:
         """
         Win conditions are:
         - 3 X or O in one row (e.g [X, X, X])
@@ -55,7 +69,7 @@ class Board:
         diag_win: bool = ((self.board[0][0]==self.board[1][1]==self.board[2][2]) or (self.board[2][0]==self.board[1][1]==self.board[0][2])) and isinstance(self.board[1][1], bool)
         if diag_win:
             winner = int(self.board[1][1])
-        return winner > 0
+        return (winner>=0, winner)
     
     def draw(self):
         """
@@ -72,4 +86,7 @@ class Board:
                         return False
             return True
 
+    def play(self, move:str, player:bool):
+        coords:tuple[int] = MOVES[move]
+        self.board[coords[0]][coords[1]] =  player
 
