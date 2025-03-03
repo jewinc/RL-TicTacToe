@@ -1,5 +1,6 @@
-from board import Board
+from board import Board, MOVES
 from test import Test 
+from agent import Agent
 
 def main():
     board = Board()

@@ -97,7 +97,7 @@ class Board:
         return self.board[coords[0]][coords[1]]
 
     def check_move_valid(self, move:str)->bool:
-        return not(isinstance(self.get(move), bool))
+        return not(isinstance(self.get(move), bool)) and (move in MOVES.keys())
             
 
     def start(self):
@@ -107,12 +107,18 @@ class Board:
                 player_move: str = input("Move already played, choose another one : ")
             return player_move
 
+
         ongoing: bool = True
         turn: bool = False
+        nb_players:int = int(input("Choose the number of players: "))
         while ongoing:
             print(f"{self}Player's {int(turn) + 1} turn")
-            player_move = move_choice(self)
-            self.play(player_move, turn)
+            if (nb_players == 2) or (nb_players == 1 and not(turn)):
+                move = move_choice(self)
+            else:
+                return None
+            
+            self.play(move, turn)
             turn = not(turn)
             winner = self.win()
             if winner[0]:
