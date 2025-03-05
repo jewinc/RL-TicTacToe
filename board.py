@@ -1,16 +1,5 @@
-MOVES: dict[str, tuple[int]] = {
-        'HG': (0,0),
-        'HM': (0,1),
-        'HD': (0,2),
-        'MG': (1,0),
-        'MM': (1,1),
-        'MD': (1,2),
-        'BG': (2,0),
-        'BM': (2,1),
-        'BD': (2,2)
-}
-
-
+from agent import Agent
+from global_var import MOVES
 
 class Board:
     def __init__(self):
@@ -107,24 +96,41 @@ class Board:
                 player_move: str = input("Move already played, choose another one : ")
             return player_move
 
+        def ai_move_choice(agents:list[Agent], nb_ai:int, turn:bool)->str:
+            if nb_ai ==2:
+                return agents[int(turn)].move()
+            elif nb_ai==1:
+                return agents[0].move()
+
 
         ongoing: bool = True
         turn: bool = False
         nb_players:int = int(input("Choose the number of players: "))
+        
+        #Agents init depending of nb of players 
+        agents:list[object] = []
+        for i in range(2-nb_players):
+            agents.append(Agent(i*42))
+        
+        #Running a game until a win or all move played
         while ongoing:
             print(f"{self}Player's {int(turn) + 1} turn")
             if (nb_players == 2) or (nb_players == 1 and not(turn)):
                 move = move_choice(self)
             else:
-                return None
+                move = ai_move_choice(agents=agents, nb_ai=len(agents), turn=turn)
+                while not(self.check_move_valid(move)):
+                    move = ai_move_choice(agents=agents, nb_ai=len(agents), turn=turn)
             
-            self.play(move, turn)
-            turn = not(turn)
-            winner = self.win()
+            self.play(move, turn) # Play move on board
+            turn = not(turn) # Turn change
+            
+            #Check if game is ended
+            winner = self.win() 
             if winner[0]:
                 ongoing = False
                 print(self)
-                print(f"The winner is player {winner[1]} !")
+                print(f"The winner is player {winner[1]+1} !")
             elif self.draw():
                 ongoing = False
 

@@ -1,4 +1,5 @@
-from board import Board, MOVES
+from board import Board
+from global_var import MOVES
 
 class Test:
     
