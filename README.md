@@ -13,11 +13,11 @@ This repository is for the course Communication in Paris-Saclay university Maste
 
 🔹 **Tasks:**  
 - [X] Define the 3x3 board as a NumPy array or list.  
-- [ ] Implement functions to:  
+- [X] Implement functions to:  
   - [X] Display the board  
   - [X] Check for a win or draw condition  
-  - [ ] Handle player moves  
-- [ ] Add basic user interaction (human vs. human mode).  
+  - [X] Handle player moves  
+- [X] Add basic user interaction (human vs. human mode).  
 
 🔹 **Milestone:** A fully functional CLI Tic-Tac-Toe game.  
 
@@ -27,7 +27,7 @@ This repository is for the course Communication in Paris-Saclay university Maste
 ✅ **Goal:** Create baseline agents to play against.  
 
 🔹 **Tasks:**  
-- [ ] Implement a **random agent** that selects moves randomly.  
+- [X] Implement a **random agent** that selects moves randomly.  
 - [ ] Implement a **rule-based agent** using the Minimax algorithm (optional, for benchmarking).  
 - [ ] Allow human vs. AI and AI vs. AI matches.  
 

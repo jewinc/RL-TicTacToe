@@ -1,16 +1,5 @@
-MOVES: dict[str, tuple[int]] = {
-        'HG': (0,0),
-        'HM': (0,1),
-        'HD': (0,2),
-        'MG': (1,0),
-        'MM': (1,1),
-        'MD': (1,2),
-        'BG': (2,0),
-        'BM': (2,1),
-        'BD': (2,2)
-}
-
-
+from agent import Agent
+from global_var import MOVES
 
 class Board:
     def __init__(self):
@@ -27,11 +16,13 @@ class Board:
             Param: boolean move
             Return: corresponding rendering
             """
-            if move:
+            if not(isinstance(move, bool)):
+                return 'E'
+            elif move:
                 return 'X'
             else:
                 return 'O'
-        
+            
         row_str: bool = "-------"
         board_string = f"{row_str}\n"
         for row in self.board:
@@ -89,4 +80,60 @@ class Board:
     def play(self, move:str, player:bool):
         coords:tuple[int] = MOVES[move]
         self.board[coords[0]][coords[1]] =  player
+
+    def get(self, move:str)->bool:
+        coords:tuple[int] = MOVES[move]
+        return self.board[coords[0]][coords[1]]
+
+    def check_move_valid(self, move:str)->bool:
+        return not(isinstance(self.get(move), bool)) and (move in MOVES.keys())
+            
+
+    def start(self):
+        def move_choice(board: Board)->str:
+            player_move: str = input("Choose a move : ")
+            while not(board.check_move_valid(player_move)):
+                player_move: str = input("Move already played, choose another one : ")
+            return player_move
+
+        def ai_move_choice(agents:list[Agent], nb_ai:int, turn:bool)->str:
+            if nb_ai ==2:
+                return agents[int(turn)].move()
+            elif nb_ai==1:
+                return agents[0].move()
+
+
+        ongoing: bool = True
+        turn: bool = False
+        nb_players:int = int(input("Choose the number of players: "))
+        
+        #Agents init depending of nb of players 
+        agents:list[object] = []
+        for i in range(2-nb_players):
+            agents.append(Agent(i*42))
+        
+        #Running a game until a win or all move played
+        while ongoing:
+            print(f"{self}Player's {int(turn) + 1} turn")
+            if (nb_players == 2) or (nb_players == 1 and not(turn)):
+                move = move_choice(self)
+            else:
+                move = ai_move_choice(agents=agents, nb_ai=len(agents), turn=turn)
+                while not(self.check_move_valid(move)):
+                    move = ai_move_choice(agents=agents, nb_ai=len(agents), turn=turn)
+            
+            self.play(move, turn) # Play move on board
+            turn = not(turn) # Turn change
+            
+            #Check if game is ended
+            winner = self.win() 
+            if winner[0]:
+                ongoing = False
+                print(self)
+                print(f"The winner is player {winner[1]+1} !")
+            elif self.draw():
+                ongoing = False
+
+            
+            
 
