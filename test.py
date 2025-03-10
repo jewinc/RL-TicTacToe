@@ -1,76 +1,69 @@
+import pytest
+
 from board import Board
-from global_var import MOVES
+from move import MoveType
 
-class Test:
-    
-    def play_move():
-        board = Board()
-        state0 = board.get('HG')
-        board.play('HG', False)
-        assert(state0!=board.get('HG'))
 
-        for move in MOVES.keys():
-            state_before = board.get(move)
-            board.play(move, True)
-            assert(state_before!=board.get(move))
+@pytest.fixture
+def board():
+    """Fixture to provide a fresh board instance for each test."""
+    return Board()
 
-    
-    def rows_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("HM", bool(player))
-        board1.play("HD", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("MG", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("MD", bool(player))
-        assert(board2.win()[0]==True)
-        
-        board3 = Board()
-        board3.play("BG", bool(player))
-        board3.play("BM", bool(player))
-        board3.play("BD", bool(player))
-        assert(board3.win()[0]==True)
-        
-    def cols_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("MG", bool(player))
-        board1.play("BG", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("HM", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("BM", bool(player))
-        assert(board2.win()[0]==True)
-        
-        board3 = Board()
-        board3.play("HD", bool(player))
-        board3.play("MD", bool(player))
-        board3.play("BD", bool(player))
-        assert(board3.win()[0]==True)
 
-    def diagonals_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("MM", bool(player))
-        board1.play("BD", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("HD", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("BG", bool(player))
-        assert(board2.win()[0]==True)
+@pytest.mark.parametrize("move", MoveType.all_moves())
+@pytest.mark.parametrize("player", [True, False])
+def test_play_move(board, move, player):
+    """Test that playing any move changes the board state.
+    and that the board state changes to the expected value."""
+    state0 = board.get(move)
+    board.play(move, player)
+    state1 = board.get(move)
+    assert state0 != state1, "Board state did not change after playing a move."
+    assert (
+        state1 == player
+    ), "Board state did not change to the expected value after playing a move."
 
-    @staticmethod
-    def run():
-        Test.play_move()
-        Test.rows_win()
-        Test.cols_win()
+
+@pytest.mark.parametrize("row", [MoveType.H_row(), MoveType.M_row(), MoveType.B_row()])
+@pytest.mark.parametrize("player", [True, False])
+def test_rows_win(board, row, player):
+    """Test that winning conditions for rows are detected."""
+    for move in row:
+        board.play(move, player)
+    assert board.win()[0]
+
+
+@pytest.mark.parametrize("col", [MoveType.G_col(), MoveType.M_col(), MoveType.D_col()])
+@pytest.mark.parametrize("player", [True, False])
+def test_cols_win(board, col, player):
+    """Test that winning conditions for columns are detected."""
+    for move in col:
+        board.play(move, player)
+    assert board.win()[0]
+
+
+@pytest.mark.parametrize(
+    "moves",
+    [
+        MoveType.H_diag(),
+        MoveType.D_diag(),
+    ],
+)
+@pytest.mark.parametrize("player", [True, False])
+def test_diagonals_win(board, moves, player):
+    """Test that winning conditions for diagonals are detected."""
+    for move in moves:
+        board.play(move, player)
+    assert board.win()[0]
+
+
+def test_print_move():
+    """Test that the string representation of HG move is 'HG'."""
+    move = MoveType.HG
+    assert str(move) == "HG"
+
+def test_from_str():
+    """Test that the move string 'MM' is converted to the MM move."""
+    move_str = "MM"
+    move = MoveType.from_str(move_str)
+    assert move == MoveType.MM
