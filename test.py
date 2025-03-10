@@ -1,76 +1,49 @@
+import pytest
+
 from board import Board
 from global_var import MOVES
 
-class Test:
-    
-    def play_move():
-        board = Board()
-        state0 = board.get('HG')
-        board.play('HG', False)
-        assert(state0!=board.get('HG'))
+@pytest.fixture
+def board():
+    """Fixture to provide a fresh board instance for each test."""
+    return Board()
 
-        for move in MOVES.keys():
-            state_before = board.get(move)
-            board.play(move, True)
-            assert(state_before!=board.get(move))
+@pytest.mark.parametrize("move", ["HG", "HM", "HD", "MG", "MM", "MD", "BG", "BM", "BD"])
+@pytest.mark.parametrize("player", [True, False])
+def test_play_move(board, move, player):
+    """Test that playing any move changes the board state.
+    and that the board state changes to the expected value."""
+    state0 = board.get(move)
+    board.play(move, player)
+    state1 = board.get(move)
+    assert state0 != state1, "Board state did not change after playing a move."
+    assert state1 == player, "Board state did not change to the expected value after playing a move."
 
-    
-    def rows_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("HM", bool(player))
-        board1.play("HD", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("MG", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("MD", bool(player))
-        assert(board2.win()[0]==True)
-        
-        board3 = Board()
-        board3.play("BG", bool(player))
-        board3.play("BM", bool(player))
-        board3.play("BD", bool(player))
-        assert(board3.win()[0]==True)
-        
-    def cols_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("MG", bool(player))
-        board1.play("BG", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("HM", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("BM", bool(player))
-        assert(board2.win()[0]==True)
-        
-        board3 = Board()
-        board3.play("HD", bool(player))
-        board3.play("MD", bool(player))
-        board3.play("BD", bool(player))
-        assert(board3.win()[0]==True)
+@pytest.mark.parametrize("row", ["H", "M", "B"])
+@pytest.mark.parametrize("player", [True, False])
+def test_rows_win(board, row, player):
+    """Test that winning conditions for rows are detected."""
+    board.play(f"{row}G", player)
+    board.play(f"{row}M", player)
+    board.play(f"{row}D", player)
+    assert board.win()[0]
 
-    def diagonals_win():
-        board1 = Board()
-        player:int = 1
-        board1.play("HG", bool(player))
-        board1.play("MM", bool(player))
-        board1.play("BD", bool(player))
-        assert(board1.win()[0]==True)
-        
-        board2 = Board()
-        board2.play("HD", bool(player))
-        board2.play("MM", bool(player))
-        board2.play("BG", bool(player))
-        assert(board2.win()[0]==True)
+@pytest.mark.parametrize("col", ["G", "M", "D"])
+@pytest.mark.parametrize("player", [True, False])
+def test_cols_win(board, col, player):
+    """Test that winning conditions for columns are detected."""
+    board.play(f"H{col}", player)
+    board.play(f"M{col}", player)
+    board.play(f"B{col}", player)
+    assert board.win()[0]
 
-    @staticmethod
-    def run():
-        Test.play_move()
-        Test.rows_win()
-        Test.cols_win()
+@pytest.mark.parametrize("moves", [
+    ["HG", "MM", "BD"],  # First diagonal win
+    ["HD", "MM", "BG"]   # Second diagonal win
+])
+@pytest.mark.parametrize("player", [True, False])
+def test_diagonals_win(board, moves, player):
+    """Test that winning conditions for diagonals are detected."""
+    for move in moves:
+        board.play(move, bool(player))
+    assert board.win()[0]
