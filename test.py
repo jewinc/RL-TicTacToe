@@ -55,3 +55,15 @@ def test_diagonals_win(board, moves, player):
     for move in moves:
         board.play(move, player)
     assert board.win()[0]
+
+
+def test_print_move():
+    """Test that the string representation of HG move is 'HG'."""
+    move = MoveType.HG
+    assert str(move) == "HG"
+
+def test_from_str():
+    """Test that the move string 'MM' is converted to the MM move."""
+    move_str = "MM"
+    move = MoveType.from_str(move_str)
+    assert move == MoveType.MM

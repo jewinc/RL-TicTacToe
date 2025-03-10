@@ -11,6 +11,9 @@ class MoveType(Enum):
     BG = (2, 0)
     BM = (2, 1)
     BD = (2, 2)
+    
+    def __str__(self):
+        return f"{self.name}"
 
     @classmethod
     def H_row(cls):
@@ -47,3 +50,9 @@ class MoveType(Enum):
     @classmethod
     def all_moves(cls):
         return list(cls)
+    
+    @classmethod
+    def from_str(cls, move_str:str):
+        if move_str not in cls.__members__:
+            return None
+        return cls[move_str]
