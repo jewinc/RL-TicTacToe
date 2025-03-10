@@ -98,9 +98,16 @@ class Board:
 
     def start(self):
         def move_choice(board: Board) -> str:
-            player_move: str = input("Choose a move : ")
-            while not (board.check_move_valid(player_move)):
-                player_move: str = input("Move already played, choose another one : ")
+            player_move_str: str = input("Choose a move : ")
+            player_move: MoveType = MoveType.from_str(player_move_str)
+            while not player_move or not (board.check_move_valid(player_move)):
+                if not player_move:
+                    player_move_str = input("Invalid move, choose another one : ")
+                else:
+                    player_move_str: str = input(
+                        "Move already played, choose another one : "
+                    )
+                player_move: MoveType = MoveType.from_str(player_move_str)
             return player_move
 
         def ai_move_choice(agents: list[Agent], nb_ai: int, turn: bool) -> str:
@@ -112,6 +119,9 @@ class Board:
         ongoing: bool = True
         turn: bool = False
         nb_players: int = int(input("Choose the number of players: "))
+
+        while nb_players not in [0, 1, 2]:
+            nb_players: int = int(input("Invalid number of players, choose 1 or 2: "))
 
         # Agents init depending of nb of players
         agents: list[object] = []
