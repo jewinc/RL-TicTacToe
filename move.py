@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from enum import Enum
 
 
@@ -13,24 +12,38 @@ class MoveType(Enum):
     BM = (2, 1)
     BD = (2, 2)
 
-    def all_moves():
-        return [
-            MoveType.HG,
-            MoveType.HM,
-            MoveType.HD,
-            MoveType.MG,
-            MoveType.MM,
-            MoveType.MD,
-            MoveType.BG,
-            MoveType.BM,
-            MoveType.BD,
-        ]
+    @classmethod
+    def H_row(cls):
+        return [cls.HG, cls.HM, cls.HD]
 
+    @classmethod
+    def M_row(cls):
+        return [cls.MG, cls.MM, cls.MD]
 
-@dataclass(frozen=True)
-class Move:
-    move_type: MoveType
+    @classmethod
+    def B_row(cls):
+        return [cls.BG, cls.BM, cls.BD]
 
-    @property
-    def position(self) -> tuple[int, int]:
-        return self.move_type.value
+    @classmethod
+    def G_col(cls):
+        return [cls.HG, cls.MG, cls.BG]
+
+    @classmethod
+    def M_col(cls):
+        return [cls.HM, cls.MM, cls.BM]
+
+    @classmethod
+    def D_col(cls):
+        return [cls.HD, cls.MD, cls.BD]
+
+    @classmethod
+    def H_diag(cls):
+        return [cls.HG, cls.MM, cls.BD]
+
+    @classmethod
+    def D_diag(cls):
+        return [cls.HD, cls.MM, cls.BG]
+
+    @classmethod
+    def all_moves(cls):
+        return list(cls)

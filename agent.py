@@ -1,14 +1,14 @@
 import numpy as np
-from global_var import MOVES
+from move import MoveType
+
 
 class Agent:
     def __init__(self, seed=42):
         np.random.seed(seed)
 
     def move(self):
-        '''
+        """
         return a random move
-        '''
-        i = np.random.randint(low=0, high=len(MOVES.keys()), size=1)
-        return list(MOVES.keys())[i[0]]
-        
+        """
+        i = np.random.randint(low=0, high=len(MoveType.all_moves()), size=1)
+        return list(MoveType.all_moves())[i[0]]
