@@ -29,6 +29,9 @@ class Board:
             board_string += f"{row_sep}\n"
         return board_string
 
+    def get_board(self) -> BoardType:
+        return self.board
+
     def get(self, move: MoveType) -> Symbol:
         return self.board[move.row][move.col]
 

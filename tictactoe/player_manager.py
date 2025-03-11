@@ -5,6 +5,7 @@ from tictactoe.board import Symbol
 from tictactoe.player import HumanPlayer
 
 from tictactoe.agents_collection.random_agent import RandomAgent
+from tictactoe.agents_collection.reinforcement_agent import ReinforcementAgent
 
 
 class PlayerManager:
@@ -65,8 +66,8 @@ class PlayerManager:
             return RandomAgent(symbol)
         # elif agent_type == AgentType.MINIMAX:
         #     return MinimaxPlayer()
-        # elif agent_type == AgentType.REINFORCEMENT:
-        #     return ReinforcementPlayer()
+        elif agent_type == AgentType.REINFORCEMENT:
+            return ReinforcementAgent(symbol, model_path="ppo_tictactoe")
         else:
             logging.error(f"Invalid machine player type: {AgentType}")
             return None

@@ -1,5 +1,6 @@
 from tictactoe.agent import AgentType
 from tictactoe.board import Board
+from tictactoe.player import PlayerType
 from tictactoe.player_manager import PlayerManager
 
 
@@ -7,7 +8,7 @@ class Game:
     def __init__(self):
         self.board = Board()
         self.player_manager = PlayerManager(
-            agentA_type=None,
+            agentA_type=AgentType.REINFORCEMENT,
             agentB_type=AgentType.RANDOM,
         )
 
@@ -23,6 +24,10 @@ class Game:
             is_won, winner = self.board.has_winner()
             if is_won:
                 print(f"Player {winner} wins!")
+                if player.player_type == PlayerType.AGENT:
+                    print(f"Winner is an agent using {player.agent_type}!")
+                else:
+                    print(f"Winner is a human player!")
                 break
 
             if self.board.is_full():
