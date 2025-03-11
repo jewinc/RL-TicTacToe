@@ -3,102 +3,120 @@
 Authors: Jewin CHENG, Mathusan SELVAKUMAR
 
 ## Abstract
+
 This repository is for the course Communication in Paris-Saclay university Master 1 ISD. The goal for this repository is to be introduced in reinforcement learning through a little game.
 
 ## Usage
+
 To run the unit tests, execute the following command:
+
 ```bash
-pytest test.py
+python -m pytest tests/
 ```
 
 > **Note:** Make sure you have the `pytest` package installed. You can install it via pip:
+>
 > ```bash
 > pip install pytest
 > ```
 
 ## Roadmap
 
-### **Phase 1: Basic Game Implementation (1-2 days)**  
-✅ **Goal:** Create a functional Tic-Tac-Toe game with a simple command-line interface (CLI).  
+### **Phase 1: Basic Game Implementation (1-2 days)**
 
-🔹 **Tasks:**  
-- [X] Define the 3x3 board as a NumPy array or list.  
-- [X] Implement functions to:  
-  - [X] Display the board  
-  - [X] Check for a win or draw condition  
-  - [X] Handle player moves  
-- [X] Add basic user interaction (human vs. human mode).  
+✅ **Goal:** Create a functional Tic-Tac-Toe game with a simple command-line interface (CLI).
 
-🔹 **Milestone:** A fully functional CLI Tic-Tac-Toe game.  
+🔹 **Tasks:**
+
+- [x] Define the 3x3 board as a NumPy array or list.
+- [x] Implement functions to:
+  - [x] Display the board
+  - [x] Check for a win or draw condition
+  - [x] Handle player moves
+- [x] Add basic user interaction (human vs. human mode).
+
+🔹 **Milestone:** A fully functional CLI Tic-Tac-Toe game.
 
 ---
 
-### **Phase 2: Implementing Random and Rule-Based Agents (2-3 days)**  
-✅ **Goal:** Create baseline agents to play against.  
+### **Phase 2: Implementing Random and Rule-Based Agents (2-3 days)**
 
-🔹 **Tasks:**  
-- [X] Implement a **random agent** that selects moves randomly.  
-- [ ] Implement a **rule-based agent** using the Minimax algorithm (optional, for benchmarking).  
-- [ ] Allow human vs. AI and AI vs. AI matches.  
+✅ **Goal:** Create baseline agents to play against.
 
-🔹 **Milestone:** Basic AI players that can play the game.  
+🔹 **Tasks:**
+
+- [x] Implement a **random agent** that selects moves randomly.
+- [ ] Implement a **rule-based agent** using the Minimax algorithm (optional, for benchmarking).
+- [ ] Allow human vs. AI and AI vs. AI matches.
+
+🔹 **Milestone:** Basic AI players that can play the game.
 
 ### Main objective :
+
 - [ ] Creating slides presentation
 
 ---
 
 ## Bonus
 
-### **Phase 3: Environment Setup for Reinforcement Learning (3-4 days)**  
-✅ **Goal:** Set up Tic-Tac-Toe as an RL environment.  
+### **Phase 3: Environment Setup for Reinforcement Learning (3-4 days)**
 
-🔹 **Tasks:**  
-- [ ] Define state representation (e.g., board as a flattened array).  
-- [ ] Define actions (valid moves).  
-- [ ] Define rewards:  
-  - +1 for a win, -1 for a loss, 0 for a draw.  
-- [ ] Implement an **environment class** (like in OpenAI Gym).  
+✅ **Goal:** Set up Tic-Tac-Toe as an RL environment.
 
-🔹 **Milestone:** A well-structured environment that supports RL training.  
+🔹 **Tasks:**
 
----
+- [ ] Define state representation (e.g., board as a flattened array).
+- [ ] Define actions (valid moves).
+- [ ] Define rewards:
+  - +1 for a win, -1 for a loss, 0 for a draw.
+- [ ] Implement an **environment class** (like in OpenAI Gym).
 
-### **Phase 4: Implementing Reinforcement Learning Agent (5-7 days)**  
-✅ **Goal:** Train an RL agent using Q-learning or Deep Q-Networks (DQN).  
-
-🔹 **Tasks:**  
-- **Tabular Q-learning approach (basic):**  
-  - [ ] Initialize a Q-table mapping state-action pairs to values.  
-  - [ ] Implement the **ε-greedy policy** for exploration/exploitation.  
-  - [ ] Train the agent via episodes.  
-
-- **Deep RL approach (optional, advanced):**  
-  - [ ] Use a **Neural Network** instead of a Q-table (DQN).  
-  - [ ] Implement experience replay and target networks for stability.  
-
-🔹 **Milestone:** A trained RL agent that improves over time.  
+🔹 **Milestone:** A well-structured environment that supports RL training.
 
 ---
 
-### **Phase 5: Evaluating & Optimizing the RL Agent (3-5 days)**  
-✅ **Goal:** Assess agent performance and fine-tune training.  
+### **Phase 4: Implementing Reinforcement Learning Agent (5-7 days)**
 
-🔹 **Tasks:**  
-- [ ] Play RL agent vs. random agent → Measure win rate.  
-- [ ] Play RL agent vs. Minimax → Evaluate competitiveness.  
-- [ ] Fine-tune hyperparameters (learning rate, discount factor, exploration rate).  
-- [ ] Implement model saving/loading for trained agents.  
+✅ **Goal:** Train an RL agent using Q-learning or Deep Q-Networks (DQN).
 
-🔹 **Milestone:** An RL agent that consistently beats random players and competes well against Minimax.  
+🔹 **Tasks:**
+
+- **Tabular Q-learning approach (basic):**
+
+  - [ ] Initialize a Q-table mapping state-action pairs to values.
+  - [ ] Implement the **ε-greedy policy** for exploration/exploitation.
+  - [ ] Train the agent via episodes.
+
+- **Deep RL approach (optional, advanced):**
+  - [ ] Use a **Neural Network** instead of a Q-table (DQN).
+  - [ ] Implement experience replay and target networks for stability.
+
+🔹 **Milestone:** A trained RL agent that improves over time.
 
 ---
 
-### **Phase 6: Finalization & Deployment (2-4 days)**  
-✅ **Goal:** Wrap up the project and showcase results.  
+### **Phase 5: Evaluating & Optimizing the RL Agent (3-5 days)**
 
-🔹 **Tasks:**  
-- [ ] Create a **Graphical User Interface (GUI)** (e.g., Tkinter, Pygame) OR a web app.  
-- [ ] Provide an option for users to play against the RL agent.  
+✅ **Goal:** Assess agent performance and fine-tune training.
 
-🔹 **Milestone:** A polished, user-friendly Tic-Tac-Toe AI.  
+🔹 **Tasks:**
+
+- [ ] Play RL agent vs. random agent → Measure win rate.
+- [ ] Play RL agent vs. Minimax → Evaluate competitiveness.
+- [ ] Fine-tune hyperparameters (learning rate, discount factor, exploration rate).
+- [ ] Implement model saving/loading for trained agents.
+
+🔹 **Milestone:** An RL agent that consistently beats random players and competes well against Minimax.
+
+---
+
+### **Phase 6: Finalization & Deployment (2-4 days)**
+
+✅ **Goal:** Wrap up the project and showcase results.
+
+🔹 **Tasks:**
+
+- [ ] Create a **Graphical User Interface (GUI)** (e.g., Tkinter, Pygame) OR a web app.
+- [ ] Provide an option for users to play against the RL agent.
+
+🔹 **Milestone:** A polished, user-friendly Tic-Tac-Toe AI.
