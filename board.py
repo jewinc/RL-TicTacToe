@@ -121,7 +121,7 @@ class Board:
         nb_players: int = int(input("Choose the number of players: "))
 
         while nb_players not in [0, 1, 2]:
-            nb_players: int = int(input("Invalid number of players, choose 1 or 2: "))
+            nb_players: int = int(input("Invalid number of players, choose 0, 1 or 2: "))
 
         # Agents init depending of nb of players
         agents: list[object] = []
