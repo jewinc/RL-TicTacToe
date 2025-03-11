@@ -1,13 +1,12 @@
-from board import Board, MOVES
-from test import Test 
+from board import Board
 from agent import Agent
+
 
 def main():
     board = Board()
-    #print(str(board))
-
-    Test.run()
+    # print(str(board))
 
     board.start()
-    
+
+
 main()
