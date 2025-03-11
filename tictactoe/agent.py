@@ -13,8 +13,8 @@ class AgentType(Enum):
 
 
 class Agent(Player):
-    def __init__(self, agent_type: AgentType, symbol: Symbol):
-        super().__init__(PlayerType.AGENT, symbol)
+    def __init__(self, agent_type: AgentType):
+        super().__init__(PlayerType.AGENT)
         self.agent_type = agent_type
 
     def get_valid_moves(self, board):

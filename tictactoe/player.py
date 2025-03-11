@@ -14,9 +14,9 @@ class PlayerType(Enum):
 
 
 class Player:
-    def __init__(self, player_type: PlayerType, symbol: Symbol):
+    def __init__(self, player_type: PlayerType):
         self._player_type = player_type
-        self._symbol = symbol
+        self._symbol = None
 
     @property
     def player_type(self):
@@ -24,16 +24,27 @@ class Player:
 
     @property
     def symbol(self):
+        if self._symbol is None:
+            raise ValueError("Player symbol is not set.")
         return self._symbol
+    
+    @symbol.setter
+    def symbol(self, symbol):
+        self._symbol = symbol
 
     @abstractmethod
     def choose_move(self, board):
         pass
+    
+    def reset(self):
+        pass
 
 
 class HumanPlayer(Player):
-    def __init__(self, symbol: Symbol):
-        super().__init__(PlayerType.HUMAN, symbol)
+    def __init__(self, name=str):
+        super().__init__(PlayerType.HUMAN)
+        
+        self.name = name
 
     def choose_move(self, board):
         while True:
@@ -45,3 +56,6 @@ class HumanPlayer(Player):
                 print("Move already played or invalid, try another one.")
             else:
                 return move
+    
+    def __str__(self):
+        return f"{self.name}"

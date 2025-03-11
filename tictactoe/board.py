@@ -38,6 +38,9 @@ class Board:
     def set_move(self, move: MoveType, symbol: Symbol):
         self.board[move.row][move.col] = symbol
 
+    def reset(self):
+        self.board = [[Symbol.EMPTY for _ in range(3)] for _ in range(3)]
+
     def has_winner(self) -> Tuple[bool, Symbol]:
         """
         Win conditions are:
