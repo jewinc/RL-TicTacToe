@@ -1,20 +1,10 @@
 from enum import Enum
 
+from config import Config
+
 from tictactoe.board import Board
 from tictactoe.player import Player, PlayerType
 from tictactoe.player_manager import PlayerManager
-
-from tictactoe.player import HumanPlayer
-from tictactoe.agents_collection.random_agent import RandomAgent
-from tictactoe.agents_collection.reinforcement_agent import ReinforcementAgent, ModelDifficulty
-
-# Defining players
-HUMAN_ONE = HumanPlayer(name="Player A")
-HUMAN_TWO = HumanPlayer(name="Player B")
-RANDOM_AGENT = RandomAgent()
-REINFORCEMENT_AGENT_EASY = ReinforcementAgent(model_difficulty=ModelDifficulty.EASY)
-REINFORCEMENT_AGENT_MEDIUM = ReinforcementAgent(model_difficulty=ModelDifficulty.MEDIUM)
-REINFORCEMENT_AGENT_HARD = ReinforcementAgent(model_difficulty=ModelDifficulty.HARD)
 
 class Game:
     class Winner(Enum):
@@ -62,16 +52,7 @@ class Game:
 
 
 if __name__ == "__main__":
-    board = Board()
-    playerA = HUMAN_ONE
-    playerB = REINFORCEMENT_AGENT_HARD
-    
-    game = Game(board, playerA, playerB)
-    
-    if playerA.player_type == PlayerType.HUMAN or playerB.player_type == PlayerType.HUMAN:
-        NUM_GAMES = 1
-    else:
-        NUM_GAMES = 10000
+    game = Game(Board(), Config.PLAYER_A, Config.PLAYER_B)
     
     stats = {
         Game.Winner.DRAW: 0,
@@ -79,7 +60,7 @@ if __name__ == "__main__":
         Game.Winner.PLAYER_B: 0,
     }
     
-    for _ in range(NUM_GAMES):
+    for _ in range(Config.NUM_GAMES):
         result = game.play()
         stats[result] += 1
         game.board.reset()
@@ -87,8 +68,8 @@ if __name__ == "__main__":
         
     
     print("Game stats:")
-    print(f"{str(playerA)} vs {str(playerB)}")
-    print(f"Number of games: {NUM_GAMES}")
+    print(f"{str(Config.PLAYER_A)} vs {str(Config.PLAYER_B)}")
+    print(f"Number of games: {Config.NUM_GAMES}")
     print(f"Draw: {stats[Game.Winner.DRAW]}")
-    print(f"{str(playerA)} wins: {stats[Game.Winner.PLAYER_A]}")
-    print(f"{str(playerB)} wins: {stats[Game.Winner.PLAYER_B]}")
+    print(f"{str(Config.PLAYER_A)} wins: {stats[Game.Winner.PLAYER_A]}")
+    print(f"{str(Config.PLAYER_B)} wins: {stats[Game.Winner.PLAYER_B]}")
