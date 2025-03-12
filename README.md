@@ -8,6 +8,14 @@ This repository is for the course Communication in Paris-Saclay university Maste
 
 ## Usage
 
+To play the game, run the following command:
+
+```bash
+python main.py
+```
+
+**You can change the configuration settings in the `config.py` file.**
+
 To run the unit tests, execute the following command:
 
 ```bash
