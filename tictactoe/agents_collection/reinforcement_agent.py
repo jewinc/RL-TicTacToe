@@ -1,3 +1,5 @@
+import logging
+import os
 import numpy as np
 
 from enum import Enum
@@ -9,19 +11,18 @@ from tictactoe.move import MoveType
 from stable_baselines3 import PPO
 
 class ModelDifficulty(Enum):
-    EASY = "ppo_tictactoe_batch_1"
-    MEDIUM = "ppo_tictactoe_batch_2"
-    HARD = "ppo_tictactoe_batch_3"
-    IMPOSSIBLE = "ppo_tictactoe_final"
+    EASY = "ppo_tictactoe_easy"
+    MEDIUM = "ppo_tictactoe_medium"
+    HARD = "ppo_tictactoe_hard"
 
 
 class ReinforcementAgent(Agent):
-    def __init__(self, model_difficulty: ModelDifficulty = ModelDifficulty.IMPOSSIBLE):
+    def __init__(self, model_difficulty: ModelDifficulty = ModelDifficulty.HARD):
         super().__init__(AgentType.REINFORCEMENT)
         
         self.model = None
         self.model_difficulty = model_difficulty
-        self.load_model(f"models/{model_difficulty.value}")
+        self.load_model(f"models/{model_difficulty.value}.zip")
 
     def encode_board(self, board):
         """
@@ -49,25 +50,25 @@ class ReinforcementAgent(Agent):
             MoveType: The chosen move
         """
         if self.model is None:
-            raise ValueError("PPO model is not loaded!")
+            # Fall back to random move if model is not loaded
+            valid_moves = self.get_valid_moves(board)
+            return np.random.choice(valid_moves)
 
-        loop_count = 0
-        while True:
-            observation = self.encode_board(board.get_board())
-            action, _ = self.model.predict(observation)
-            
-            # Convert flat action index (0-8) to board coordinates (row, col)
-            row, col = divmod(action, 3)
-            move = MoveType((row, col))
-            
-            if board.is_move_valid(move):
-                return move
-            
-            loop_count += 1
-            if loop_count > 10:
-                # Make a random choice if more than 10 loops done
-                valid_moves = self.get_valid_moves(board)
-                return np.random.choice(valid_moves)
+        observation = self.encode_board(board.get_board())
+        action, _ = self.model.predict(observation)
+
+        row, col = divmod(action, 3)
+        move = MoveType((row, col))
+
+        if board.is_move_valid(move):
+            return move
+
+        # If predicted move is invalid, choose randomly from valid moves
+        valid_moves = self.get_valid_moves(board)
+        if valid_moves:
+            return np.random.choice(valid_moves)
+        else:
+            raise ValueError("No valid moves left, but choose_move() was still called.")
     
     def load_model(self, path):
         """
@@ -75,7 +76,16 @@ class ReinforcementAgent(Agent):
         Args:
             path (str): Path to the model file
         """
-        self.model = PPO.load(path)
+        if not os.path.exists(path):
+            logging.warning(f"Model file not found: {path}. Agent will play randomly.")
+            self.model = None  # Use a fallback random policy
+            return
+        
+        try:
+            self.model = PPO.load(path)
+        except Exception as e:
+            logging.error(f"Failed to load PPO model from {path}: {e}")
+            self.model = None  # Ensure the agent doesn't attempt to use an invalid model
     
     def __str__(self):
-        return f"{self.agent_type} ({self.model_difficulty.name})"
+        return f"Reinforcement Agent ({self.model_difficulty.name})"

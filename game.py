@@ -1,7 +1,7 @@
 from enum import Enum
 
 from tictactoe.board import Board
-from tictactoe.player import Player
+from tictactoe.player import Player, PlayerType
 from tictactoe.player_manager import PlayerManager
 
 from tictactoe.player import HumanPlayer
@@ -9,13 +9,12 @@ from tictactoe.agents_collection.random_agent import RandomAgent
 from tictactoe.agents_collection.reinforcement_agent import ReinforcementAgent, ModelDifficulty
 
 # Defining players
-HUMAN_ONE = HumanPlayer()
-HUMAN_TWO = HumanPlayer()
+HUMAN_ONE = HumanPlayer(name="Player A")
+HUMAN_TWO = HumanPlayer(name="Player B")
 RANDOM_AGENT = RandomAgent()
 REINFORCEMENT_AGENT_EASY = ReinforcementAgent(model_difficulty=ModelDifficulty.EASY)
 REINFORCEMENT_AGENT_MEDIUM = ReinforcementAgent(model_difficulty=ModelDifficulty.MEDIUM)
 REINFORCEMENT_AGENT_HARD = ReinforcementAgent(model_difficulty=ModelDifficulty.HARD)
-REINFORCEMENT_AGENT_IMPOSSIBLE = ReinforcementAgent(model_difficulty=ModelDifficulty.IMPOSSIBLE)
 
 class Game:
     class Winner(Enum):
@@ -28,6 +27,11 @@ class Game:
         self.playerA = playerA
         self.playerB = playerB
         self.player_manager = PlayerManager(playerA, playerB)
+        
+        if playerA.player_type == PlayerType.HUMAN or playerB.player_type == PlayerType.HUMAN:
+            self.show_board = True
+        else:
+            self.show_board = False
 
     def play(self) -> Winner:
         """
@@ -38,31 +42,36 @@ class Game:
         # Running a game until a win or all moves played
         while True:
             player = self.player_manager.current_player
-            # print(f"Player {player.symbol} turn:")
+            print(f"{player} turn (symbol: {player.symbol}):") if self.show_board else None
+            
             move = player.choose_move(self.board)
             self.board.set_move(move, player.symbol)
-            # print(self.board)
+            
+            print(self.board) if self.show_board else None
 
             is_won, winner_symbol = self.board.has_winner()
             if is_won:
                 winner = self.player_manager.get_player_from_symbol(winner_symbol)
-                # print(winner.msg())
+                print(f"{winner} won!") if self.show_board else None
                 return Game.Winner.PLAYER_A if winner == self.playerA else Game.Winner.PLAYER_B
 
             if self.board.is_full():
-                # print("It's a draw!")
+                print("It's a draw!") if self.show_board else None
                 return Game.Winner.DRAW
             self.player_manager.switch_player()
 
 
 if __name__ == "__main__":
     board = Board()
-    playerA = RANDOM_AGENT
-    playerB = REINFORCEMENT_AGENT_IMPOSSIBLE
+    playerA = HUMAN_ONE
+    playerB = REINFORCEMENT_AGENT_HARD
     
     game = Game(board, playerA, playerB)
     
-    NUM_GAMES = 100
+    if playerA.player_type == PlayerType.HUMAN or playerB.player_type == PlayerType.HUMAN:
+        NUM_GAMES = 1
+    else:
+        NUM_GAMES = 10000
     
     stats = {
         Game.Winner.DRAW: 0,

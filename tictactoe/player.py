@@ -57,5 +57,5 @@ class HumanPlayer(Player):
             else:
                 return move
     
-    def __str__(self):
-        return f"{self.name}"
+    def __str__(self) -> str:
+        return self.name

@@ -21,14 +21,18 @@ class TicTacToeEnv(gym.Env):
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         self.board = np.zeros(9, dtype=np.int8)
-        return self.board, {}
+        self.done = False  # Explicitly track if game is done
+        return self.board, {}  # Return initial state
 
     def get_opponent_model(self):
-        """Randomly load a past version of the agent as the opponent"""
-        past_models = [f for f in os.listdir("./models") if "ppo_tictactoe_batch" in f]
+        """Load a fixed opponent model for consistent evaluation."""
+        past_models = sorted(
+            [f for f in os.listdir("./models") if "ppo_tictactoe_batch" in f],
+            key=lambda f: int(f.split("_")[-1])  # Sort numerically by batch number
+        )
         if past_models:
-            opponent_model = random.choice(past_models)
-            return PPO.load(f"./models/{opponent_model}")
+            latest_model = past_models[-1]  # Always load the most recent model
+            return PPO.load(f"./models/{latest_model}")
         return None
 
     def step(self, action):
@@ -65,8 +69,6 @@ class TicTacToeEnv(gym.Env):
         if action == 4:
             reward += 0.2  # Extra reward for center move
 
-        reward += np.random.uniform(-0.5, 0.5)  # Small noise
-
         return self.board, 0, False, False, {}
 
     def check_win(self, player):
@@ -80,6 +82,12 @@ class TicTacToeEnv(gym.Env):
 
 # Create vectorized Tic-Tac-Toe environment
 env = make_vec_env(TicTacToeEnv, n_envs=4)
+
+SEED = 42
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+env.seed(SEED)
 
 # Define policy architecture
 policy_kwargs = dict(
@@ -124,7 +132,7 @@ print(f"Training stopped after {time.time() - start_time:.2f} seconds (~{total_t
 model.save("./models/ppo_tictactoe_final")
 
 # Evaluate performance
-obs, _ = env.reset()
+obs = env.reset()
 total_reward = np.zeros(env.num_envs)
 
 for _ in range(10):  # Test over 10 games
