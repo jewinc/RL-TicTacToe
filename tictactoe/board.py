@@ -29,11 +29,17 @@ class Board:
             board_string += f"{row_sep}\n"
         return board_string
 
+    def get_board(self) -> BoardType:
+        return self.board
+
     def get(self, move: MoveType) -> Symbol:
         return self.board[move.row][move.col]
 
     def set_move(self, move: MoveType, symbol: Symbol):
         self.board[move.row][move.col] = symbol
+
+    def reset(self):
+        self.board = [[Symbol.EMPTY for _ in range(3)] for _ in range(3)]
 
     def has_winner(self) -> Tuple[bool, Symbol]:
         """
