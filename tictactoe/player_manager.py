@@ -23,8 +23,7 @@ class PlayerManager:
         
         self.players = [playerA, playerB]
         
-        # Assigning symbols to players randomly
-        random.shuffle(self.players)
+        # Assigning symbols to players (in order)
         self.players[0].symbol = Symbol.X
         self.players[1].symbol = Symbol.O
 
